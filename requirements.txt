@@ -1,0 +1,14 @@
+https://todomvc.com/examples/react/#/
+
+1.)
+
+
+Topics used;
+1.dom manipulation
+2.Array
+3.event haandler( used callbacks)
+
+
+1nd functionality
+2st day UI hard core
+
