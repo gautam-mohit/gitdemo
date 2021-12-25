@@ -1,48 +1,74 @@
 window.onload = function () {
-  var todos = ["dancing", "programming"];
-  var todosParent = document.getElementById("todos")
+  //  array to store all the todos
+  var todos = {
+    dancing: false,
+    programming: true,
+    health: true,
+    corona: false,
+  };
 
-  for (let i = 0; i < todos.length; i++) {
-    let list = document.createElement("LI");
-    let span = document.createElement("SPAN");
-    let txt = document.createTextNode(todos[i]);
-    span.className = "close";
-    span.appendChild(txt);
-    list.appendChild(span);
+  // getting the parent element
+  var todosParent = document.getElementById("todos");
+  initialize();
+  // adding the element in the html
+  function initialize() {
+    todosParent.innerHTML = "";
+    Object.keys(todos).forEach((todo) => {
+      let list = document.createElement("li");
+      let span = document.createElement("span");
+      let checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.checked = todos[todo];
+      let txt = document.createTextNode(todo);
+      // Close button
+      // let closeBtn = document.createElement("button");
+      // closeBtn.innerText = "delete";
+      // closeBtn.addEventListener("click", function () {
+      //   deleteTodo(todo);
+      // });
+      // using event
+      span.addEventListener("dblclick", function () {
+        deleteTodo(todo);
+      });
+
+      //  TODO: uncheck and update the status of the task(trur or false)
+      checkbox.addEventListener("change", function (event) {
+        updateVal(event, todo);
+      });
+
+      span.className = "close";
+      span.appendChild(checkbox);
+      span.appendChild(txt);
+      // span.appendChild(closeBtn);
+      list.appendChild(span);
+      todosParent.appendChild(list);
+    });
   }
 
-  var close = document.getElementsByClassName("close");
-  var i;
-  for (i = 0; i < close.length; i++) {
-    close[i].onclick = function () {
-      var div = this.parentElement;
-      div.style.display = "none";
-    };
-  }
+  // TODO: Add new element in todos
+
+  var btn = document.getElementById("addBtn");
+  btn.addEventListener("click", newElement);
 
   function newElement() {
-    var li = document.createElement("li");
-    var inputValue = document.getElementById("myInput").value;
-    var t = document.createTextNode(inputValue);
-    li.appendChild(t);
-    if (inputValue === "") {
-      alert("You must write something!");
-    } else {
-      document.getElementById("myUL").appendChild(li);
-    }
-    document.getElementById("myInput").value = "";
+    let li = document.createElement("li");
+    let inputValue = document.getElementById("myInput").value;
+    todos[inputValue] = false;
+    inputValue = "";
+    initialize();
   }
 
-  var btn = document.getElementById("addbtn");
-  btn.addEventListener("click", newElement);
-  span.className = "close";
-  span.appendChild(txt);
-  li.appendChild(span);
+  // to delete todos on double clk
+  function deleteTodo(todo) {
+    delete todos[todo];
+    initialize();
+  }
 
-  for (i = 0; i < close.length; i++) {
-    close[i].onclick = function () {
-      var div = this.parentElement;
-      div.style.display = "none";
-    };
+  // to update the value either its true or false
+  function updateVal(e, todo) {
+    console.log("before===>", todos);
+    todos[todo] = e.target.checked;
+    console.log("after===>", todos);
+    initialize();
   }
 };
